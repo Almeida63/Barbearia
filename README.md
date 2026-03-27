@@ -4,11 +4,27 @@ Projeto full stack com:
 
 - Frontend em HTML5, CSS3 e JavaScript Vanilla
 - Backend em Node.js + Express
-- Banco SQLite3 com migrations
+- Banco **PostgreSQL** *(migrado do SQLite3)*
 - Tema dark em preto/dourado
-- URL local: `http://localhost:3000`
+- URL local: http://localhost:3000
+
+---
 
 ## O que mudou nesta versão
+
+Esta versão migrou o banco de dados de **SQLite para PostgreSQL**:
+
+- banco de dados real, pronto para produção
+- conexão via Pool de conexões com o driver `pg`
+- tabela `horarios_bloqueados` reestruturada com `data_inicio` e `data_fim`
+- queries convertidas para a sintaxe do PostgreSQL (`$1, $2...`)
+- frontend do admin ajustado para refletir a nova estrutura do banco
+
+Consulte o arquivo **`BANCO_DE_DADOS.md`** para criar o banco e as tabelas no seu computador.
+
+---
+
+## O que já existia
 
 Esta versão ficou mais prática para o cliente:
 
@@ -16,12 +32,14 @@ Esta versão ficou mais prática para o cliente:
 - agenda visual com os próximos dias disponíveis
 - horários calculados conforme a duração do serviço
 - compartilhamento rápido do agendamento no WhatsApp
-- painel admin com bloqueio por duração (`30/60/90/120 min`)
-- pronto para deploy porque usa `process.env.PORT`
+- painel admin com bloqueio por duração (30/60/90/120 min)
+- pronto para deploy porque usa process.env.PORT
+
+---
 
 ## Estrutura
 
-```bash
+```
 barbearia/
 ├── public/
 │   ├── index.html
@@ -41,39 +59,35 @@ barbearia/
 ├── server/
 │   ├── server.js
 │   ├── database.js
-│   ├── migrate.js
-│   ├── seed.js
-│   ├── migrations/
-│   │   ├── 001_init.sql
-│   │   └── 002_block_duration.sql
-│   ├── routes/
-│   │   ├── authRoutes.js
-│   │   └── bookingRoutes.js
-│   └── models/
+│   └── routes/
+│       ├── authRoutes.js
+│       └── bookingRoutes.js
+├── BANCO_DE_DADOS.md
 ├── package.json
-├── README.md
-└── database.sqlite
+└── README.md
 ```
+
+---
 
 ## Como rodar
 
 ```bash
 npm install
-npm run migrate
-npm run seed
 npm start
 ```
 
-Abra no navegador:
+Antes de rodar, siga as instruções do **`BANCO_DE_DADOS.md`** para criar o banco e configurar a conexão em `server/database.js`.
 
-```bash
-http://localhost:3000
-```
+Abra no navegador: http://localhost:3000
+
+---
 
 ## Credenciais do admin
 
-- E-mail: `admin@barbearia.com`
-- Senha: `admin123`
+- E-mail: admin@barbearia.com
+- Senha: admin123
+
+---
 
 ## Fluxo do cliente
 
@@ -87,6 +101,8 @@ http://localhost:3000
 8. Use o botão de WhatsApp para compartilhar os detalhes
 9. Consulte ou cancele depois em `/perfil` usando e-mail + telefone
 
+---
+
 ## Fluxo do admin
 
 1. Acesse `/admin`
@@ -96,79 +112,75 @@ http://localhost:3000
 5. Bloqueie horários com duração personalizada
 6. Acompanhe os clientes cadastrados
 
+---
+
 ## Rotas principais
 
 ### Páginas
-- `GET /`
-- `GET /servicos`
-- `GET /agendar`
-- `GET /perfil`
-- `GET /admin`
+- GET `/`
+- GET `/servicos`
+- GET `/agendar`
+- GET `/perfil`
+- GET `/admin`
 
 ### API
-- `POST /api/auth/admin/login`
-- `GET /api/auth/session`
-- `POST /api/auth/logout`
-- `GET /api/services`
-- `GET /api/available-times?date=YYYY-MM-DD&servico_id=ID`
-- `POST /api/appointments-public`
-- `GET /api/public-appointments?email=...&telefone=...`
-- `DELETE /api/public-appointments/:id`
-- `GET /api/admin/appointments`
-- `GET /api/admin/customers`
-- `PATCH /api/admin/appointments/:id/confirm`
-- `DELETE /api/admin/appointments/:id`
-- `POST /api/admin/block`
-- `GET /api/admin/blocked`
-- `DELETE /api/admin/blocked/:id`
+- POST `/api/auth/admin/login`
+- GET `/api/auth/session`
+- POST `/api/auth/logout`
+- GET `/api/services`
+- GET `/api/available-times?date=YYYY-MM-DD&servico_id=ID`
+- POST `/api/appointments-public`
+- GET `/api/public-appointments?email=...&telefone=...`
+- DELETE `/api/public-appointments/:id`
+- GET `/api/admin/appointments`
+- GET `/api/admin/customers`
+- PATCH `/api/admin/appointments/:id/confirm`
+- DELETE `/api/admin/appointments/:id`
+- POST `/api/admin/block`
+- GET `/api/admin/blocked`
+- DELETE `/api/admin/blocked/:id`
+
+---
 
 ## Observações práticas
 
-- O sistema considera atendimento entre `09:00` e `20:00`.
-- Um serviço de `60 min` ocupa dois slots de `30 min`.
-- Um bloqueio admin de `120 min` também trava quatro slots.
+- O sistema considera atendimento entre 09:00 e 20:00.
+- Um serviço de 60 min ocupa dois slots de 30 min.
+- Um bloqueio admin de 120 min também trava quatro slots.
 - O botão de WhatsApp usa link de compartilhamento pronto, sem depender de API paga.
-- Para deploy, basta instalar dependências, rodar migration/seed e iniciar com `npm start`.
+- Para deploy, configure a variável `DATABASE_URL` ou edite diretamente o `server/database.js` com os dados do banco.
+
+---
 
 ## Teste manual sugerido
 
-### Cenário 1 — cliente
-- escolher `Combo Corte + Barba`
-- clicar em um dia disponível
-- verificar que o sistema esconde horários que não cabem na duração
-- finalizar o agendamento
-- abrir `/perfil` e consultar a reserva com e-mail + telefone
+**Cenário 1 — cliente**
+1. Escolher Combo Corte + Barba
+2. Clicar em um dia disponível
+3. Verificar que o sistema esconde horários que não cabem na duração
+4. Finalizar o agendamento
+5. Abrir `/perfil` e consultar a reserva com e-mail + telefone
 
-### Cenário 2 — admin
-- entrar no `/admin`
-- bloquear um horário por `90 min`
-- voltar para `/agendar`
-- validar que os slots afetados sumiram para serviços compatíveis
-- confirmar um agendamento pendente
+**Cenário 2 — admin**
+1. Entrar no `/admin`
+2. Bloquear um horário por 90 min
+3. Voltar para `/agendar`
+4. Validar que os slots afetados sumiram para serviços compatíveis
+5. Confirmar um agendamento pendente
 
-## Screenshots mentais
-
-- Home: hero grande, preto/dourado, CTA forte e cards com hover.
-- Agendar: bloco lateral com agenda visual por dias e bloco principal com formulário premium.
-- Sucesso: cartão verde elegante com protocolo e botão de WhatsApp.
-- Admin: painel escuro com tabelas, duração dos serviços e bloqueios por intervalo.
-
-## Observação honesta
-
-A estrutura e a sintaxe dos arquivos foram validadas localmente, mas a instalação real das dependências (`npm install`) precisa ser feita no seu computador para subir o servidor.
-
+---
 
 ## Notificação ao confirmar agendamento
 
-Na versão atual, ao confirmar um agendamento no painel admin, o sistema já abre o **WhatsApp Web** com a mensagem pronta para avisar o cliente. Isso evita que o cliente fique sem retorno após a aprovação.
+Na versão atual, ao confirmar um agendamento no painel admin, o sistema já abre o WhatsApp Web com a mensagem pronta para avisar o cliente. Isso evita que o cliente fique sem retorno após a aprovação.
 
-Fluxo:
+**Fluxo:**
 1. Cliente faz o agendamento
 2. Status inicial fica como `pendente`
-3. Admin clica em **Confirmar**
+3. Admin clica em Confirmar
 4. O sistema muda para `confirmado`
 5. O WhatsApp abre com a mensagem pronta para envio
 
-Também existe o botão **WhatsApp** na tabela para reenviar a confirmação depois.
+Também existe o botão WhatsApp na tabela para reenviar a confirmação depois.
 
 > Observação: o envio é semi-automático via WhatsApp Web. Não usa API oficial do WhatsApp, então não dispara sozinho em segundo plano.
