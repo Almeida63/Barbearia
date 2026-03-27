@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin | BarberGold</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container navbar">
+      <a class="brand" href="/">BARBER<span>GOLD</span></a>
+      <nav class="nav-links">
+        <a href="/">Home</a>
+        <a href="/servicos">Serviços</a>
+        <a href="/agendar">Agendar</a>
+        <a href="/perfil">Consultar</a>
+        <a class="active" href="/admin">Admin</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="container page-hero-card fade-up">
+        <span class="hero-kicker">Painel administrativo</span>
+        <h1>Controle total da operação da barbearia.</h1>
+        <p>Gerencie agendamentos, clientes e horários bloqueados com um painel centralizado.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container grid" style="gap:1.5rem;">
+        <div id="admin-message" class="message hidden"></div>
+
+        <div id="admin-login-area" class="card form-card fade-up hidden">
+          <div class="section-title" style="margin-bottom:1rem;">
+            <span>Login admin</span>
+            <h2>Acesso restrito</h2>
+          </div>
+          <div class="info-box" style="margin-bottom:1rem;">Credenciais padrão: admin@barbearia.com / admin123</div>
+          <form id="admin-login-form" class="grid" style="gap:1rem;max-width:480px;">
+            <div class="field">
+              <label for="admin-email-input">E-mail</label>
+              <input id="admin-email-input" type="email" name="email" required />
+            </div>
+            <div class="field">
+              <label for="admin-password-input">Senha</label>
+              <input id="admin-password-input" type="password" name="senha" required />
+            </div>
+            <button class="btn" type="submit">Entrar como admin</button>
+          </form>
+        </div>
+
+        <div id="admin-dashboard" class="hidden">
+          <div class="grid grid-2">
+            <article class="card form-card fade-up">
+              <div class="section-title" style="margin-bottom:1rem;">
+                <span>Administrador logado</span>
+                <h2 id="admin-email">—</h2>
+              </div>
+              <p class="muted">Você pode confirmar, remover agendamentos, bloquear horários e abrir o WhatsApp com a mensagem pronta para avisar o cliente.</p>
+              <button id="admin-logout-btn" class="btn-outline" style="margin-top:1rem;">Sair</button>
+            </article>
+
+            <article class="card form-card fade-up">
+              <div class="section-title" style="margin-bottom:1rem;">
+                <span>Bloquear horário</span>
+                <h2>Controle de agenda</h2>
+              </div>
+              <form id="block-form" class="grid" style="gap:1rem;">
+                <div class="form-grid">
+                  <div class="field">
+                    <label for="block-date">Data</label>
+                    <input id="block-date" type="date" name="data" required />
+                  </div>
+                  <div class="field">
+                    <label for="block-time">Horário</label>
+                    <input id="block-time" type="time" name="horario" step="1800" min="09:00" max="20:00" required />
+                  </div>
+                  <div class="field">
+                    <label for="block-duration">Duração do bloqueio</label>
+                    <select id="block-duration" name="duracao_minutos">
+                      <option value="30">30 min</option>
+                      <option value="60">60 min</option>
+                      <option value="90">90 min</option>
+                      <option value="120">120 min</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="field">
+                  <label for="block-reason">Motivo</label>
+                  <input id="block-reason" type="text" name="motivo" placeholder="Ex.: reunião interna, manutenção..." />
+                </div>
+                <button class="btn" type="submit">Bloquear horário</button>
+              </form>
+            </article>
+          </div>
+
+          <article class="card form-card fade-up" style="margin-top:1.5rem;">
+            <div class="section-title" style="margin-bottom:1rem;">
+              <span>Agendamentos</span>
+              <h2>Gerenciar reservas e avisos</h2>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Cliente</th>
+                    <th>Contato</th>
+                    <th>Serviço</th>
+                    <th>Duração</th>
+                    <th>Data/Hora</th>
+                    <th>Status</th>
+                    <th>Preço</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-appointments-body"></tbody>
+              </table>
+            </div>
+          </article>
+
+          <div class="grid grid-2" style="margin-top:1.5rem;">
+            <article class="card form-card fade-up">
+              <div class="section-title" style="margin-bottom:1rem;">
+                <span>Clientes</span>
+                <h2>Base cadastrada</h2>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Nome</th>
+                      <th>E-mail</th>
+                      <th>Telefone</th>
+                      <th>Total</th>
+                      <th>Cadastro</th>
+                    </tr>
+                  </thead>
+                  <tbody id="customers-body"></tbody>
+                </table>
+              </div>
+            </article>
+
+            <article class="card form-card fade-up">
+              <div class="section-title" style="margin-bottom:1rem;">
+                <span>Horários bloqueados</span>
+                <h2>Agenda travada</h2>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Data/Hora</th>
+                      <th>Duração</th>
+                      <th>Motivo</th>
+                      <th>Ação</th>
+                    </tr>
+                  </thead>
+                  <tbody id="blocked-body"></tbody>
+                </table>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>Painel administrativo da BarberGold em http://localhost:3000/admin</p>
+    </div>
+  </footer>
+
+  <script src="/js/common.js"></script>
+  <script src="/js/admin.js"></script>
+</body>
+</html>

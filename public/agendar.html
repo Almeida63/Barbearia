@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agendar | BarberGold</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container navbar">
+      <a class="brand" href="/">BARBER<span>GOLD</span></a>
+      <nav class="nav-links">
+        <a href="/">Home</a>
+        <a href="/servicos">Serviços</a>
+        <a class="active" href="/agendar">Agendar</a>
+        <a href="/perfil">Consultar</a>
+        <a href="/admin">Admin</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="container page-hero-card fade-up">
+        <span class="hero-kicker">Agenda premium</span>
+        <h1>Escolha o serviço, veja os dias livres e reserve em segundos.</h1>
+        <p>Agora a agenda ficou mais visual: você escolhe o serviço primeiro, vê os dias com disponibilidade e só então seleciona o melhor horário.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container grid grid-2">
+        <div class="card form-card fade-up">
+          <div class="section-title" style="margin-bottom:1rem;">
+            <span>Como funciona</span>
+            <h2>Agendamento sem login</h2>
+          </div>
+
+          <div class="info-box" style="margin-bottom:1rem;">
+            Horário de atendimento: <strong>09:00 às 20:00</strong>. A disponibilidade se ajusta automaticamente conforme a duração de cada serviço.
+          </div>
+
+          <div class="steps-grid">
+            <div class="mini-step-card">
+              <strong>1.</strong>
+              <p>Selecione o serviço para carregar a agenda correta.</p>
+            </div>
+            <div class="mini-step-card">
+              <strong>2.</strong>
+              <p>Escolha um dos próximos dias com horários livres.</p>
+            </div>
+            <div class="mini-step-card">
+              <strong>3.</strong>
+              <p>Preencha seus dados e confirme o agendamento.</p>
+            </div>
+          </div>
+
+          <div class="section-title" style="margin:1.6rem 0 1rem;">
+            <span>Agenda visual</span>
+            <h2>Próximos dias disponíveis</h2>
+          </div>
+          <div id="calendar-strip" class="calendar-strip">
+            <div class="inline-loader"><span class="spinner"></span>Carregando dias...</div>
+          </div>
+        </div>
+
+        <div class="card form-card fade-up">
+          <div id="booking-message" class="message hidden"></div>
+          <div class="section-title" style="margin-bottom:1rem;">
+            <span>Reserva</span>
+            <h2>Finalizar agendamento</h2>
+          </div>
+
+          <form id="booking-form" class="grid" style="gap:1rem;">
+            <div class="form-grid">
+              <div class="field">
+                <label for="nome">Nome</label>
+                <input id="nome" type="text" name="nome" placeholder="Seu nome" required />
+              </div>
+              <div class="field">
+                <label for="telefone">Telefone</label>
+                <input id="telefone" type="tel" name="telefone" placeholder="(11) 99999-9999" required />
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="email">E-mail</label>
+              <input id="email" type="email" name="email" placeholder="seuemail@email.com" required />
+            </div>
+
+            <div class="field">
+              <label for="servico_id">Serviço</label>
+              <select id="servico_id" name="servico_id" required></select>
+            </div>
+
+            <div class="form-grid">
+              <div class="field">
+                <label for="data">Data</label>
+                <input id="data" type="date" name="data" required />
+              </div>
+              <div class="field">
+                <label>Serviço selecionado</label>
+                <div id="service-summary" class="info-box">Selecione um serviço para visualizar duração e preço.</div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Horários disponíveis</label>
+              <div id="selected-time-text" class="muted">Selecione um serviço e uma data</div>
+              <div id="times-container" class="times-grid" style="margin-top:1rem;"></div>
+            </div>
+
+            <button id="booking-submit-btn" class="btn" type="submit">
+              <span id="booking-submit-text">Confirmar agendamento</span>
+              <span id="booking-spinner" class="spinner hidden"></span>
+            </button>
+          </form>
+
+          <div id="booking-success-card" class="success-card hidden">
+            <h3>Agendamento realizado 🎉</h3>
+            <p id="success-copy">Seu horário foi reservado com sucesso.</p>
+            <div class="hero-actions" style="margin-top:1rem;">
+              <a id="whatsapp-share-link" class="btn" href="#" target="_blank" rel="noopener noreferrer">Enviar detalhes para o WhatsApp</a>
+              <a class="btn-outline" href="/perfil">Consultar meus agendamentos</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>BarberGold — visual premium, rápido para o cliente e pronto para crescer.</p>
+    </div>
+  </footer>
+
+  <script src="/js/common.js"></script>
+  <script src="/js/agendar.js"></script>
+</body>
+</html>

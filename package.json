@@ -1,0 +1,33 @@
+{
+  "name": "barbearia-premium",
+  "version": "1.0.0",
+  "description": "Sistema de barbearia com agenda visual, agendamento sem login e painel admin.",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "dev": "nodemon server/server.js",
+    "migrate": "node server/migrate.js",
+    "seed": "node server/seed.js",
+    "setup": "npm run migrate && npm run seed"
+  },
+  "keywords": [
+    "barbearia",
+    "agendamento",
+    "node",
+    "express",
+    "sqlite3"
+  ],
+  "author": "OpenAI",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "pg": "^8.20.0",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}

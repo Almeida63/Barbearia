@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Consultar Agendamentos | BarberGold</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container navbar">
+      <a class="brand" href="/">BARBER<span>GOLD</span></a>
+      <nav class="nav-links">
+        <a href="/">Home</a>
+        <a href="/servicos">Serviços</a>
+        <a href="/agendar">Agendar</a>
+        <a class="active" href="/perfil">Consultar</a>
+        <a href="/admin">Admin</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="container page-hero-card fade-up">
+        <span class="hero-kicker">Consulta rápida</span>
+        <h1>Veja seus agendamentos sem precisar entrar em conta.</h1>
+        <p>Informe o mesmo e-mail e telefone usados na reserva para visualizar e cancelar horários quando necessário.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container grid" style="gap:1.5rem;">
+        <div id="profile-message" class="message hidden"></div>
+
+        <div class="card form-card fade-up">
+          <div class="section-title" style="margin-bottom:1rem;">
+            <span>Consultar reserva</span>
+            <h2>Localizar meus horários</h2>
+          </div>
+
+          <form id="lookup-form" class="grid" style="gap:1rem;">
+            <div class="form-grid">
+              <div class="field">
+                <label for="lookup-email">E-mail</label>
+                <input id="lookup-email" type="email" name="email" required />
+              </div>
+              <div class="field">
+                <label for="lookup-telefone">Telefone</label>
+                <input id="lookup-telefone" type="tel" name="telefone" required />
+              </div>
+            </div>
+            <button class="btn" type="submit">Buscar agendamentos</button>
+          </form>
+        </div>
+
+        <div id="results-box" class="card form-card fade-up hidden">
+          <div class="section-title" style="margin-bottom:1rem;">
+            <span>Resultado</span>
+            <h2 id="customer-name">Seus agendamentos</h2>
+          </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Serviço</th>
+                    <th>Data e horário</th>
+                    <th>Preço</th>
+                    <th>Status</th>
+                    <th>Ação</th>
+                  </tr>
+                </thead>
+                <tbody id="appointments-body"></tbody>
+              </table>
+            </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>BarberGold — simples para o cliente e prático para a operação.</p>
+    </div>
+  </footer>
+
+  <script src="/js/common.js"></script>
+  <script src="/js/perfil.js"></script>
+</body>
+</html>
